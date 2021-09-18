@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.7.0
+    hooks:
+      - id: isort
+  - repo: https://github.com/psf/black
+    rev: 20.8b1
+    hooks:
+      - id: black
+  - repo: https://gitlab.com/PyCQA/flake8
+    rev: 39ceae7491f4121902a5dccc22657a0675c95539
+    hooks:
+      - id: flake8
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.0
+    hooks:
+      - id: bandit
+        args: [--skip, "B107,B101,B106,B105,B303,B104,B110,B309,B608,B310",]

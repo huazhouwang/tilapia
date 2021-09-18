@@ -1,0 +1,14 @@
+[flake8]
+exclude = .git
+per-file-ignores = __init__.py:F401
+; F401: imported but unused
+;       - Exposed to the outside
+ignore = E203, E501, W503
+; E203: Whitespace before ':'
+;       - Conflict with black
+; W503: Line break occurred before a binary operator
+;       - Conflict with black
+; E501: Line too long
+;       - Conflict with black
+max-line-length = 120
+max-complexity = 18

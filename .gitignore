@@ -1,0 +1,19 @@
+*.pyc
+build/
+dist/
+*.egg/
+packages
+/env/
+/data/
+.idea
+.mypy_cache
+.vscode
+.python-version
+
+# tests/tox
+.tox/
+.cache/
+.coverage
+.pytest_cache
+
+/local_settings.py
