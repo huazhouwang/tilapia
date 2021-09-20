@@ -1,6 +1,5 @@
 from falcon.media.validators import jsonschema
 
-from wallet.lib.basic.functional.json import json_stringify
 from wallet.lib.wallet import manager as wallet_manager
 
 
@@ -20,151 +19,105 @@ class Item:
         resp.media = wallet_manager.get_wallet_info_by_id(wallet_id, update_balance=update_balance)
 
 
-class SoftwarePrimaryCreator:
-    URI = Collection.URI + "/software/primary/{chain_code}/create"
+class PreSend:
+    URI = Collection.URI + "/{wallet_id}/pre_send"
 
     @jsonschema.validate(
         {
             "type": "object",
-            "required": ["password"],
+            "required": ["coin_code"],
             "properties": {
-                "password": {"type": "string"},
-                "mnemonic": {"type": "string"},
-                "passphrase": {"type": "string"},
-                "mnemonic_strength": {"type": "integer"},
-                "name": {"type": "string"},
-                "address_encoding": {"type": "string"},
-            },
-        }
-    )
-    def on_post(self, req, resp, chain_code):
-        media = req.media
-        password = media["password"]
-
-        if wallet_manager.has_primary_wallet():
-            name, address_encoding = media.get("name"), media.get("address_encoding")
-
-            if not name:
-                count = wallet_manager.count_primary_wallet_by_chain(chain_code)
-                name = f"{chain_code.upper()}-{count + 1}"
-
-            result = wallet_manager.create_next_derived_primary_wallet(
-                chain_code, name, password, address_encoding=address_encoding
-            )
-        else:
-            mnemonic, passphrase, mnemonic_strength = (
-                media.get("mnemonic"),
-                media.get("passphrase"),
-                media.get("mnemonic_strength", 128),
-            )
-            result = wallet_manager.create_primary_wallets(
-                [chain_code],
-                password=password,
-                mnemonic=mnemonic,
-                passphrase=passphrase,
-                mnemonic_strength=mnemonic_strength,
-            )[0]
-
-        resp.media = result
-
-
-class SoftwareStandaloneImporter:
-    URI = Collection.URI + "/software/standalone/{chain_code}/import"
-
-    @jsonschema.validate(
-        {
-            "type": "object",
-            "required": ["wallet_type", "password", "payload"],
-            "properties": {
-                "wallet_type": {"type": "string"},
-                "password": {"type": "string"},
+                "coin_code": {"type": "string"},
+                "to_address": {"type": "string"},
+                "value": {"type": "string"},
+                "nonce": {"type": "string"},
+                "fee_limit": {"type": "string"},
+                "fee_price_per_unit": {"type": "string"},
                 "payload": {"type": "object"},
-                "name": {"type": "string"},
-                "address_encoding": {"type": "string"},
-            },
-        }
-    )
-    def on_post(self, req, resp, chain_code):
-        media = req.media
-        wallet_type, password, payload, name, address_encoding = (
-            media["wallet_type"],
-            media["password"],
-            media["payload"],
-            media.get("name"),
-            media.get("address_encoding"),
-        )
-
-        if not name:
-            name = f"IMPORT-{wallet_type}-{chain_code}".upper()
-
-        if wallet_type == "mnemonic":
-            mnemonic, passphrase, bip44_path = payload["mnemonic"], payload.get("passphrase"), payload.get("bip44_path")
-            result = wallet_manager.import_standalone_wallet_by_mnemonic(
-                name,
-                chain_code,
-                mnemonic,
-                password,
-                passphrase=passphrase,
-                address_encoding=address_encoding,
-                bip44_path=bip44_path,
-            )
-        elif wallet_type == "keystore":
-            keystore_json, keystore_password = payload["keystore"], payload["keystore_password"]
-            result = wallet_manager.import_standalone_wallet_by_keystore(
-                name, chain_code, keystore_json, keystore_password, password, address_encoding=address_encoding
-            )
-        elif wallet_type == "prvkey":
-            prvkey = payload["prvkey"]
-            if prvkey.startswith("0x"):
-                prvkey = prvkey[2:]
-
-            result = wallet_manager.import_standalone_wallet_by_prvkey(
-                name, chain_code, bytes.fromhex(prvkey), password, address_encoding=address_encoding
-            )
-        elif wallet_type == "pubkey":
-            pubkey = payload["pubkey"]
-            if pubkey.startswith("0x"):
-                pubkey = pubkey[2:]
-
-            result = wallet_manager.import_watchonly_wallet_by_pubkey(
-                name, chain_code, bytes.fromhex(pubkey), address_encoding=address_encoding
-            )
-        elif wallet_type == "address":
-            address = payload["address"]
-            result = wallet_manager.import_watchonly_wallet_by_address(name, chain_code, address)
-        else:
-            raise Exception(f"Invalid wallet type: {wallet_type}")
-
-        resp.media = result
-
-
-class SoftwareExporter:
-    URI = Collection.URI + "/software/{wallet_id}/export"
-
-    @jsonschema.validate(
-        {
-            "type": "object",
-            "required": ["password", "dest"],
-            "properties": {
-                "password": {"type": "string"},
-                "dest": {"type": "string"},
             },
         }
     )
     def on_post(self, req, resp, wallet_id):
+        media = req.media
+        coin_code, to_address, value, nonce, fee_limit, fee_price_per_unit, payload = (
+            media["coin_code"],
+            media.get("to_address"),
+            media.get("value"),
+            media.get("nonce"),
+            media.get("fee_limit"),
+            media.get("fee_price_per_unit"),
+            media.get("payload"),
+        )
+
         wallet_id = int(wallet_id)
+        value = value and int(value)
+        nonce = nonce and int(nonce)
+        fee_limit = fee_limit and int(fee_limit)
+        fee_price_per_unit = fee_price_per_unit and int(fee_price_per_unit)
 
-        password, dest = req.media["password"], req.media["dest"]
+        result = wallet_manager.pre_send(
+            wallet_id=wallet_id,
+            coin_code=coin_code,
+            to_address=to_address,
+            value=value,
+            nonce=nonce,
+            fee_limit=fee_limit,
+            fee_price_per_unit=fee_price_per_unit,
+            payload=payload,
+        )
+        resp.media = result
 
-        if dest == "mnemonic":
-            m, p = wallet_manager.export_mnemonic(wallet_id, password)
-            result = {"mnemonic": m, "passphrase": p}
-        elif dest == "prvkey":
-            result = wallet_manager.export_prvkey(wallet_id, password)
-        elif dest == "keystore":
-            result = wallet_manager.export_keystore(wallet_id, password)
-            result = json_stringify(result)
-        else:
-            raise Exception(f"Invalid destination: {dest}")
 
+class Send:
+    URI = Collection.URI + "/{wallet_id}/send"
+
+    @jsonschema.validate(
+        {
+            "type": "object",
+            "required": ["coin_code", "to_address", "value"],
+            "properties": {
+                "coin_code": {"type": "string"},
+                "to_address": {"type": "string"},
+                "value": {"type": "string"},
+                "nonce": {"type": "string"},
+                "fee_limit": {"type": "string"},
+                "fee_price_per_unit": {"type": "string"},
+                "payload": {"type": "object"},
+                "password": {"type": "string"},
+                "device_path": {"type": "string"},
+            },
+        }
+    )
+    def on_post(self, req, resp, wallet_id):
+        media = req.media
+        coin_code, to_address, value, nonce, fee_limit, fee_price_per_unit, payload, password, device_path = (
+            media["coin_code"],
+            media["to_address"],
+            media["value"],
+            media.get("nonce"),
+            media.get("fee_limit"),
+            media.get("fee_price_per_unit"),
+            media.get("payload"),
+            media.get("password"),
+            media.get("device_path"),
+        )
+
+        wallet_id = int(wallet_id)
+        value = int(value)
+        nonce = nonce and int(nonce)
+        fee_limit = fee_limit and int(fee_limit)
+        fee_price_per_unit = fee_price_per_unit and int(fee_price_per_unit)
+
+        result = wallet_manager.send(
+            wallet_id=wallet_id,
+            coin_code=coin_code,
+            to_address=to_address,
+            value=value,
+            nonce=nonce,
+            fee_limit=fee_limit,
+            fee_price_per_unit=fee_price_per_unit,
+            payload=payload,
+            password=password,
+            hardware_device_path=device_path,
+        )
         resp.media = result

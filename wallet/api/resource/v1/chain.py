@@ -1,6 +1,7 @@
 from falcon.media.validators import jsonschema
 
 from wallet.lib.coin import manager as coin_manager
+from wallet.lib.provider import manager as provider_manager
 
 
 class Collection:
@@ -59,3 +60,10 @@ class AddCoin:
         coin_code = coin_manager.add_coin(chain_code, token_address, symbol, decimals, name=name, icon=icon)
 
         resp.media = coin_manager.get_coin_info(coin_code)
+
+
+class FeePrice:
+    URI = Item.URI + "/fee_price"
+
+    def on_get(self, req, resp, chain_code):
+        resp.media = provider_manager.get_prices_per_unit_of_fee(chain_code)

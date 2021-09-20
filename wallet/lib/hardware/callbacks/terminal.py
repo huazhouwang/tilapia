@@ -19,7 +19,7 @@ class TerminalCallback(interfaces.HardwareCallbackInterface):
         is_bypass = helper.get_value_of_agent("bypass_passphrase", 0)
         helper.set_value_to_agent("bypass_passphrase", 0)
 
-        if is_bypass == 0:
+        if is_bypass:
             return ""
 
         return self.impl.get_passphrase(available_on_device)

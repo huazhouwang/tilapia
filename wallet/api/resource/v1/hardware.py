@@ -4,11 +4,13 @@ from wallet.lib.basic.functional.require import require
 from wallet.lib.hardware import manager as hardware_manager
 from wallet.lib.provider import manager as provider_manager
 
-HARDWARE_URI = "hardware"
+
+class _Hardware:
+    URI = "hardware"
 
 
 class Devices:
-    URI = HARDWARE_URI + "/devices"
+    URI = _Hardware.URI + "/devices"
 
     def on_get(self, req, resp):
         devices = list(hardware_manager.enumerate_all_devices().keys())
@@ -25,7 +27,7 @@ class DeviceFeature:
 
 
 class Agent:
-    URI = HARDWARE_URI + "/agent"
+    URI = _Hardware.URI + "/agent"
 
     def on_get(self, req, resp):
         resp.media = hardware_manager.dump_hardware_agent()
@@ -47,7 +49,7 @@ class Agent:
 
 
 class XpubExporter:
-    URI = HARDWARE_URI + "/xpub/{chain_code}"
+    URI = _Hardware.URI + "/xpub/{chain_code}"
 
     def on_get(self, req, resp, chain_code):
         device_path, bip44_path, confirm_on_device = (

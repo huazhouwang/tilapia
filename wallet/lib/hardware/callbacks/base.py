@@ -32,7 +32,7 @@ class BaseCallback(interfaces.HardwareCallbackInterface, abc.ABC):
         is_bypass = helper.get_value_of_agent("bypass_passphrase", 0)
         helper.set_value_to_agent("bypass_passphrase", 0)
 
-        if is_bypass == 0:
+        if is_bypass:
             return ""
 
         code = 300 + 1

@@ -916,8 +916,8 @@ def clear_all_primary_wallets(password: str = None):
         cascade_delete_wallet_related_models(wallet.id, password)
 
 
-def count_primary_wallet_by_chain(chain_code: str) -> int:
-    return len(daos.wallet.list_all_wallets(chain_code, wallet_type=data.WalletType.SOFTWARE_PRIMARY))
+def count_specific_type_wallets(chain_code: str, wallet_type: data.WalletType) -> int:
+    return len(daos.wallet.list_all_wallets(chain_code, wallet_type=wallet_type))
 
 
 def generate_next_bip44_path_for_primary_hardware_wallet(
