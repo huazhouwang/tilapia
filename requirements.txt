@@ -1,4 +1,4 @@
-pyaes>=0.1a1
+pyaes==1.6.1
 eth-account==0.5.4
 peewee==3.14.0
 ecdsa==0.17.0
