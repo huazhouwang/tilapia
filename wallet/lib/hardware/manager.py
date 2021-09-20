@@ -1,13 +1,16 @@
 import logging
 import os
 import time
-from typing import Dict, Tuple
+from typing import Any, Dict, Tuple
 
 from trezorlib import transport as trezor_transport
 from trezorlib.transport import bridge as trezor_bridge
 
 from wallet.lib.conf import settings
-from wallet.lib.hardware import callbacks, exceptions, proxy
+from wallet.lib.hardware import exceptions, proxy
+from wallet.lib.hardware.callbacks import helper
+from wallet.lib.hardware.callbacks import host as host_callback
+from wallet.lib.hardware.callbacks import terminal as terminal_callback
 
 logger = logging.getLogger("app.hardware")
 
@@ -32,12 +35,10 @@ def enumerate_all_devices() -> Dict[str, trezor_transport.Transport]:
 
 
 def _create_client(device: trezor_transport.Transport) -> proxy.HardwareProxyClient:
-    if settings.runtime == "ios":
-        callback = callbacks.IOSCallback()
-    elif settings.runtime == "android":
-        callback = callbacks.AndroidCallback()
+    if settings.runtime == "host":
+        callback = host_callback.HostCallback()
     else:
-        callback = callbacks.TerminalCallback(
+        callback = terminal_callback.TerminalCallback(
             always_prompt=True, pin_on_device=os.environ.get("HARDWARE_PIN_ON_DEVICE") == "True"
         )
 
@@ -94,3 +95,11 @@ def setup_or_change_pin(hardware_device_path: str) -> bool:
 
 def wipe_device(hardware_device_path: str) -> bool:
     return get_client(hardware_device_path).wipe_device()
+
+
+def dump_hardware_agent() -> dict:
+    return helper.dump_agent()
+
+
+def update_hardware_agent(attr_name: str, value: Any):
+    helper.set_value_to_agent(attr_name, value)

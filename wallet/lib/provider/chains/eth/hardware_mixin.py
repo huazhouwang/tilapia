@@ -43,7 +43,7 @@ class ETHHardwareMixin(interfaces.HardwareSupportingMixin, abc.ABC):
         confirm_on_device: bool = False,
     ) -> str:
         return trezor_ethereum.get_public_node(
-            hardware_client, n=bip44_path.to_bip44_int_path(), show_display=confirm_on_device
+            hardware_client, n=bip44_path.to_bip44_int_path(), show_display=1 if confirm_on_device else 0
         ).xpub
 
     def hardware_get_address(

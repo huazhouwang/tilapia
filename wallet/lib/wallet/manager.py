@@ -132,12 +132,12 @@ def import_standalone_wallet_by_prvkey(
 
 
 def import_standalone_wallet_by_keystore(
-    name: str, chain_code: str, keyfile_json: str, keystore_password: str, password: str, address_encoding: str = None
+    name: str, chain_code: str, keystore_json: str, keystore_password: str, password: str, address_encoding: str = None
 ) -> dict:
     chain_info = coin_manager.get_chain_info(chain_code)
     require(chain_info.chain_affinity == codes.ETH)
     address_encoding = address_encoding or chain_info.default_address_encoding
-    prvkey = utils.decrypt_eth_keystore(keyfile_json, keystore_password)
+    prvkey = utils.decrypt_eth_keystore(keystore_json, keystore_password)
     return import_standalone_wallet_by_prvkey(name, chain_code, prvkey, password, address_encoding)
 
 
@@ -492,11 +492,12 @@ def export_keystore(wallet_id: int, password: str) -> dict:
     return encrypted_private_key
 
 
-def get_wallet_info_by_id(wallet_id: int, only_visible: bool = True) -> dict:
+def get_wallet_info_by_id(wallet_id: int, update_balance: bool = False, only_visible: bool = True) -> dict:
     wallet_model = _get_wallet_by_id(wallet_id)
     default_account = get_default_account_by_wallet(wallet_id)
     assets = daos.asset.query_assets_by_accounts([default_account.id], only_visible=only_visible)
-    assets = refresh_assets(assets)
+    if update_balance:
+        assets = refresh_assets(assets)
     return _build_wallet_info(wallet_model, default_account, assets)
 
 
@@ -541,12 +542,13 @@ def _build_wallet_info(
     return wallet_info
 
 
-def get_all_wallets_info(chain_code: str = None, force_update: bool = False, only_visible: bool = True) -> List[dict]:
+def get_all_wallets_info(chain_code: str = None, update_balance: bool = False, only_visible: bool = True) -> List[dict]:
     wallets = daos.wallet.list_all_wallets(chain_code)
     accounts = daos.account.query_accounts_by_wallets([i.id for i in wallets])
 
     assets = daos.asset.query_assets_by_accounts([i.id for i in accounts], only_visible=only_visible)
-    assets = refresh_assets(assets, force_update=force_update)
+    if update_balance:
+        assets = refresh_assets(assets)
 
     last_account_lookup = {i.wallet_id: i for i in accounts}  # bind the last account to the wallet
     asset_lookup = collections.defaultdict(list)

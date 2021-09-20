@@ -51,7 +51,7 @@ class BTCHardwareMixin(interfaces.HardwareSupportingMixin, abc.ABC):
         return trezor_btc.get_public_node(
             hardware_client,
             n=bip44_path.to_bip44_int_path(),
-            show_display=confirm_on_device,
+            show_display=1 if confirm_on_device else 0,
             coin_name=self.chain_info.name,
             script_type=script_type,
         ).xpub

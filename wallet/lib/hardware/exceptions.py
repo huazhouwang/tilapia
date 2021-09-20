@@ -1,11 +1,7 @@
 from trezorlib.exceptions import Cancelled  # noqa F401
 
 
-class GeneralHardwareException(Exception):
-    pass
-
-
-class NoAvailableDevice(GeneralHardwareException):
+class NoAvailableDevice(Exception):
     pass
 
 

@@ -2,11 +2,9 @@ import os
 from os import environ, path
 from typing import Literal
 
-runtime: Literal["android", "ios", "others"] = "others"
-if "iOS_DATA" in environ:
-    runtime = "ios"
-elif "ANDROID_DATA" in environ:
-    runtime = "android"
+runtime: Literal["host", "terminal"] = "terminal"
+if "API_HOSTING" in environ:
+    runtime = "host"
 
 IS_DEV = os.environ.get("IS_DEV") == "True"
 

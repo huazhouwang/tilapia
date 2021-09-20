@@ -5,15 +5,19 @@ from typing import Any, Callable
 from wallet.lib.basic.functional.wraps import timeout_lock
 from wallet.lib.hardware import exceptions
 
-AGENT = object()
+_AGENT = dict()
 
 
 def get_value_of_agent(attr_name: str, default=None):
-    return getattr(AGENT, attr_name, default)
+    return _AGENT.get(attr_name, default)
 
 
 def set_value_to_agent(attr_name: str, value: Any):
-    return setattr(AGENT, attr_name, value)
+    _AGENT[attr_name] = value
+
+
+def dump_agent() -> dict:
+    return _AGENT.copy()
 
 
 @contextlib.contextmanager
