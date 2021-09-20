@@ -3,11 +3,12 @@ from dataclasses import asdict, fields, replace
 from decimal import Decimal
 from typing import Set
 
-from wallet.lib.basic.functional import json_encoders
+from wallet.lib.basic.functional.json import json_stringify
 
 
 class DataClassMixin(object):
     def clone(self, **kwargs):
+        # noinspection PyDataclass
         return replace(self, **kwargs)
 
     @classmethod
@@ -15,9 +16,11 @@ class DataClassMixin(object):
         if not data:
             data = dict()
 
+        # noinspection PyArgumentList
         return cls(**data)
 
     def to_dict(self) -> dict:
+        # noinspection PyDataclass
         return asdict(self)
 
     @classmethod
@@ -32,6 +35,7 @@ class DataClassMixin(object):
         decimal_fields = getattr(cls, cache_name, None)
 
         if decimal_fields is None:
+            # noinspection PyDataclass
             decimal_fields = {i.name for i in fields(cls) if i.type is Decimal}
             setattr(cls, cache_name, decimal_fields)
 
@@ -47,4 +51,4 @@ class DataClassMixin(object):
         return data
 
     def to_json(self):
-        return json.dumps(self.to_dict(), cls=json_encoders.DecimalEncoder)
+        return json_stringify(self.to_dict())
