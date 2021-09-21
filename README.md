@@ -3,4 +3,15 @@
 Multi-chain wallet server (or library), written in python,
 supports btc, bch, ltc, eth, bsc, etc.
 
+## Get Start
+1. Prepare python env, recommend >= 3.8
+2. Install requirements
+    * `pip install -r requirements.txt`
+    * `pip install -r requirements-optional.txt` (optional)
+    * `pip install -r requiremetns-dev.txt` (optional)
+3. Play with restful api
+   * ` gunicorn --reload "wallet.api.app:create_app()" --workers=1 --threads 5`
+   * `curl --request GET --url http://127.0.0.1:8000/ping`
+   * Now you can test all apis under 'wallet/api'
+
 > Forked from [OneKeyHQ/electrum](https://github.com/OneKeyHQ/electrum) and cleaned up deeply.
