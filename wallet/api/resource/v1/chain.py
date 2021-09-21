@@ -26,9 +26,9 @@ class Coins:
 
 
 class CoinItem:
-    URI = Coins.URI + "/{coin_code}"
+    URI = "coins/{coin_code}"
 
-    def on_get(self, req, resp, chain_code, coin_code):
+    def on_get(self, req, resp, coin_code):
         resp.media = coin_manager.get_coin_info(coin_code, nullable=True)
 
 
