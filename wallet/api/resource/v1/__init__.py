@@ -17,6 +17,7 @@ __RESOURCES__ = [
     wallet.PreSend,
     wallet.Send,
     wallet.MessageSigner,
+    wallet.HardwareAddressConfirm,
     software_wallet.PrimaryCreator,
     software_wallet.StandaloneImporter,
     software_wallet.Exporter,

@@ -192,3 +192,20 @@ class MessageSigner:
         resp.media = wallet_manager.sign_message(
             wallet_id, message, password=password, hardware_device_path=device_path
         )
+
+
+class HardwareAddressConfirm:
+    URI = Item.URI + "/confirm_address_on_hardware"
+
+    @jsonschema.validate(
+        {
+            "type": "object",
+            "required": ["device_path"],
+            "properties": {
+                "device_path": {"type": "string"},
+            },
+        }
+    )
+    def on_post(self, req, resp, wallet_id):
+        device_path = req.media["device_path"]
+        resp.media = wallet_manager.confirm_address_on_hardware(wallet_id, device_path)
