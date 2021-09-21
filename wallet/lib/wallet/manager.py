@@ -815,6 +815,8 @@ def hide_asset(wallet_id: int, coin_code: str):
     asset = daos.asset.get_asset_by_account_and_coin_code(default_account.id, coin_code)
     if asset is None:
         raise exceptions.IllegalWalletOperation(f"Asset not found. wallet_id: {wallet_id}, coin_code: {coin_code}")
+    elif asset.coin_code == asset.chain_code:
+        raise exceptions.IllegalWalletOperation("Can't hide main asset")
 
     daos.asset.hide_asset(asset.id)
 

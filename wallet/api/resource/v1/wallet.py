@@ -56,11 +56,11 @@ class Item:
 
 
 class _Asset:
-    URI = Item.URI + "/assets"
+    URI = Item.URI + "/assets/{coin_code}"
 
 
 class ShowAsset:
-    URI = _Asset.URI + "/show/{coin_code}"
+    URI = _Asset.URI + "/show"
 
     def on_post(self, req, resp, wallet_id, coin_code):
         wallet_manager.create_or_show_asset(wallet_id, coin_code)
@@ -68,21 +68,19 @@ class ShowAsset:
 
 
 class HideAsset:
-    URI = _Asset.URI + "/hide/{coin_code}"
+    URI = _Asset.URI + "/hide"
 
     def on_post(self, req, resp, wallet_id, coin_code):
         wallet_manager.hide_asset(wallet_id, coin_code)
 
 
 class PreSend:
-    URI = Collection.URI + "/{wallet_id}/pre_send"
+    URI = _Asset.URI + "/pre_send"
 
     @jsonschema.validate(
         {
             "type": "object",
-            "required": ["coin_code"],
             "properties": {
-                "coin_code": {"type": "string"},
                 "to_address": {"type": "string"},
                 "value": {"type": "string"},
                 "nonce": {"type": "string"},
@@ -92,10 +90,9 @@ class PreSend:
             },
         }
     )
-    def on_post(self, req, resp, wallet_id):
+    def on_post(self, req, resp, wallet_id, coin_code):
         media = req.media
-        coin_code, to_address, value, nonce, fee_limit, fee_price_per_unit, payload = (
-            media["coin_code"],
+        to_address, value, nonce, fee_limit, fee_price_per_unit, payload = (
             media.get("to_address"),
             media.get("value"),
             media.get("nonce"),
@@ -124,14 +121,13 @@ class PreSend:
 
 
 class Send:
-    URI = Collection.URI + "/{wallet_id}/send"
+    URI = _Asset.URI + "/send"
 
     @jsonschema.validate(
         {
             "type": "object",
-            "required": ["coin_code", "to_address", "value"],
+            "required": ["to_address", "value"],
             "properties": {
-                "coin_code": {"type": "string"},
                 "to_address": {"type": "string"},
                 "value": {"type": "string"},
                 "nonce": {"type": "string"},
@@ -143,10 +139,9 @@ class Send:
             },
         }
     )
-    def on_post(self, req, resp, wallet_id):
+    def on_post(self, req, resp, wallet_id, coin_code):
         media = req.media
-        coin_code, to_address, value, nonce, fee_limit, fee_price_per_unit, payload, password, device_path = (
-            media["coin_code"],
+        to_address, value, nonce, fee_limit, fee_price_per_unit, payload, password, device_path = (
             media["to_address"],
             media["value"],
             media.get("nonce"),
