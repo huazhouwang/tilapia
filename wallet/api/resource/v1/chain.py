@@ -53,7 +53,7 @@ class AddCoin:
         token_address, symbol, decimals, name, icon = (
             media["token_address"],
             media["symbol"],
-            media["symbol"],
+            media["decimals"],
             media.get("name"),
             media.get("icon"),
         )
