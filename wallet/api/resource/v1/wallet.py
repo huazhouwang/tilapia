@@ -171,3 +171,24 @@ class Send:
             hardware_device_path=device_path,
         )
         resp.media = result
+
+
+class MessageSigner:
+    URI = Item.URI + "/message/sign"
+
+    @jsonschema.validate(
+        {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+                "password": {"type": "string"},
+                "message": {"type": "string"},
+                "device_path": {"type": "string"},
+            },
+        }
+    )
+    def on_post(self, req, resp, wallet_id):
+        message, password, device_path = req.media["message"], req.media.get("password"), req.media.get("device_path")
+        resp.media = wallet_manager.sign_message(
+            wallet_id, message, password=password, hardware_device_path=device_path
+        )
