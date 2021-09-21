@@ -20,9 +20,14 @@ setup(
     url="https://github.com/huazhouwang/tilapia",
     python_requires=">=3.8",
     install_requires=requirements,
-    packages=find_packages("."),
+    packages=find_packages(".", exclude=["tests", "tests.*", "env"]),
     license="MIT Licence",
     long_description=directory.joinpath("README.md").read_text(),
     long_description_content_type="text/markdown",
     keywords="multi-chain wallet cryptocurrencies btc eth python",
+    entry_points={
+        "console_scripts": [
+            "tilapia = wallet.api.wsgi:main",
+        ],
+    },
 )

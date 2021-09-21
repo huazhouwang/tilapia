@@ -10,7 +10,7 @@ supports btc, bch, ltc, eth, bsc, etc.
     * `pip install -r requirements-optional.txt` (optional, api server needs)
     * `pip install -r requiremetns-dev.txt` (optional, develop needs)
 3. Play with restful api
-   * ` gunicorn --reload "wallet.api.app:create_app()" --workers=1 --threads 5`
+   * `./scripts/run.sh`
    * `curl --request GET --url http://127.0.0.1:8000/ping`
    * Now you can test all apis under 'wallet/api'
 

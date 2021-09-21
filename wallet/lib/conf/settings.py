@@ -9,7 +9,7 @@ if "API_HOSTING" in environ:
 IS_DEV = os.environ.get("IS_DEV") == "True"
 
 PROJECT_DIR = path.dirname(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))))
-DATA_DIR = f"{PROJECT_DIR}/data"
+DATA_DIR = environ.get("tilapia-data-dir", f"{PROJECT_DIR}/data")
 
 LOGGING = {
     "version": 1,

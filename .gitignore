@@ -9,6 +9,7 @@ packages
 .mypy_cache
 .vscode
 .python-version
+*.egg-info/
 
 # tests/tox
 .tox/
