@@ -4,7 +4,6 @@ from typing import Callable, Dict, Iterable, List, Sequence, Set, Tuple
 
 from wallet.lib.basic.functional.timing import timing_logger
 from wallet.lib.basic.functional.wraps import cache_it
-from wallet.lib.basic.ticker.utils import on_interval
 from wallet.lib.coin import codes
 from wallet.lib.coin import manager as coin_manager
 from wallet.lib.price import daos
@@ -108,7 +107,6 @@ def _split_paths_to_pairs(paths: List[Sequence[str]]) -> Set[Tuple[str, str]]:
     return pairs
 
 
-@on_interval(15 * 60)
 @timing_logger("price_manager.on_ticker_signal")
 def on_ticker_signal():
     pricing()

@@ -7,7 +7,7 @@ _specific_cases = [
     (lambda i: isinstance(i, decimal.Decimal), lambda i: f"{i.normalize():f}"),
     (dataclasses.is_dataclass, lambda i: i.to_dict()),
     (lambda i: isinstance(i, set), list),
-    (lambda i: isinstance(i, Exception), str),
+    (lambda i: isinstance(i, Exception), repr),
 ]
 
 

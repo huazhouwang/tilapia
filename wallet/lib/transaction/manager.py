@@ -9,7 +9,6 @@ from wallet.lib.basic.functional.require import require
 from wallet.lib.basic.functional.timing import timing_logger
 from wallet.lib.basic.functional.wraps import error_interrupter, timeout_lock
 from wallet.lib.basic.orm.database import db
-from wallet.lib.basic.ticker.utils import on_interval
 from wallet.lib.coin import data as coin_data
 from wallet.lib.coin import manager as coin_manager
 from wallet.lib.provider import data as provider_data
@@ -410,7 +409,6 @@ def delete_actions_by_addresses(chain_code: str, addresses: List[str]) -> int:
     return daos.delete_actions_by_addresses(chain_code, addresses)
 
 
-@on_interval(60)
 @timing_logger("transaction_manager.on_ticker_signal")
 def on_ticker_signal():
     update_pending_actions()

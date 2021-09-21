@@ -3,6 +3,7 @@ from wallet.api.resource.v1 import chain, hardware, hardware_wallet, software_wa
 __REAL_PATH__ = "/v1"
 __RESOURCES__ = [
     utility.Migrate,
+    utility.Ticker,
     chain.Collection,
     chain.Item,
     chain.Coins,
