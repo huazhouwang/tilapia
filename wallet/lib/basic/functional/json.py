@@ -6,7 +6,7 @@ from typing import Any
 _specific_cases = [
     (lambda i: isinstance(i, decimal.Decimal), lambda i: f"{i.normalize():f}"),
     (dataclasses.is_dataclass, lambda i: i.to_dict()),
-    (lambda i: isinstance(i, set), list),
+    (lambda i: isinstance(i, (set, tuple)), list),
     (lambda i: isinstance(i, Exception), repr),
 ]
 

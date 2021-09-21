@@ -1,4 +1,4 @@
-from wallet.api.resource.v1 import chain, hardware, hardware_wallet, provider, software_wallet, utility, wallet
+from wallet.api.resource.v1 import chain, hardware, hardware_wallet, price, provider, software_wallet, utility, wallet
 
 __REAL_PATH__ = "/v1"
 __RESOURCES__ = [
@@ -28,4 +28,5 @@ __RESOURCES__ = [
     hardware_wallet.PrimaryCreator,
     hardware_wallet.StandaloneCreator,
     provider.MessageVerifier,
+    price.Price,
 ]
