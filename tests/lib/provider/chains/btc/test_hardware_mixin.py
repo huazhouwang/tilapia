@@ -3,9 +3,9 @@ from unittest.mock import Mock, patch
 
 from trezorlib import messages as trezor_messages
 
-from wallet.lib.basic import bip44
-from wallet.lib.provider import data
-from wallet.lib.provider.chains.btc import provider
+from tilapia.lib.basic import bip44
+from tilapia.lib.provider import data
+from tilapia.lib.provider.chains.btc import provider
 
 
 class TestBTCHardwareMixin(TestCase):
@@ -25,7 +25,7 @@ class TestBTCHardwareMixin(TestCase):
             client_selector=self.fake_client_selector,
         )
 
-    @patch("wallet.lib.provider.chains.btc.hardware_mixin.trezor_btc.sign_tx")
+    @patch("tilapia.lib.provider.chains.btc.hardware_mixin.trezor_btc.sign_tx")
     def test_hardware_sign_transaction(self, fake_trezor_sign):
         # Get previous tx
         previous_txid = "f4a073d6359b4dfd78782cc94b40ce000efcd45eb08d81d758ad29e8659b0645"

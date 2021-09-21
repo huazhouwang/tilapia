@@ -2,7 +2,7 @@ import decimal
 from dataclasses import dataclass
 from unittest import TestCase
 
-from wallet.lib.basic.dataclass.dataclass import DataClassMixin
+from tilapia.lib.basic.dataclass.dataclass import DataClassMixin
 
 
 @dataclass

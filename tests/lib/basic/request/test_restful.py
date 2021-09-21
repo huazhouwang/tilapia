@@ -1,11 +1,11 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from wallet.lib.basic.request import enums, exceptions, restful
+from tilapia.lib.basic.request import enums, exceptions, restful
 
 
 class TestRestfulRequest(TestCase):
-    @patch("wallet.lib.basic.request.restful.Session")
+    @patch("tilapia.lib.basic.request.restful.Session")
     def test_request(self, fake_session_creator):
         fake_session = Mock()
         fake_session_creator.return_value = fake_session

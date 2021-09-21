@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wallet.lib.basic import bip32
+from tilapia.lib.basic import bip32
 
 
 class TestBip32(TestCase):

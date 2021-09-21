@@ -1,11 +1,11 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from wallet.lib.basic.request import exceptions, json_rpc
+from tilapia.lib.basic.request import exceptions, json_rpc
 
 
 class TestJsonRPCRequest(TestCase):
-    @patch("wallet.lib.basic.request.json_rpc.RestfulRequest")
+    @patch("tilapia.lib.basic.request.json_rpc.RestfulRequest")
     def test_call(self, fake_restful_request_creator):
         fake_restful = Mock()
         fake_restful_request_creator.return_value = fake_restful
@@ -64,7 +64,7 @@ class TestJsonRPCRequest(TestCase):
             with self.assertRaisesRegex(exceptions.JsonRPCException, "Json RPC call failed."):
                 ins.call("ping", params=["a"], headers={"Custom-Field": "cc"})
 
-    @patch("wallet.lib.basic.request.json_rpc.RestfulRequest")
+    @patch("tilapia.lib.basic.request.json_rpc.RestfulRequest")
     def test_batch_call(self, fake_restful_request_creator):
         fake_restful = Mock()
         fake_restful_request_creator.return_value = fake_restful

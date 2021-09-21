@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from wallet.lib.secret import registry
-from wallet.lib.secret.data import CurveEnum
-from wallet.lib.secret.interfaces import KeyInterface
+from tilapia.lib.secret import registry
+from tilapia.lib.secret.data import CurveEnum
+from tilapia.lib.secret.interfaces import KeyInterface
 
 
 class TestKeys(TestCase):

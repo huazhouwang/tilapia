@@ -5,17 +5,17 @@ from unittest.mock import Mock, call, patch
 
 import peewee
 
-from wallet.lib.basic.orm import test_utils
-from wallet.lib.coin import data as coin_data
-from wallet.lib.provider import data as provider_data
-from wallet.lib.provider import exceptions as provider_exceptions
-from wallet.lib.transaction import daos, data, manager, models
+from tilapia.lib.basic.orm import test_utils
+from tilapia.lib.coin import data as coin_data
+from tilapia.lib.provider import data as provider_data
+from tilapia.lib.provider import exceptions as provider_exceptions
+from tilapia.lib.transaction import daos, data, manager, models
 
 
 @test_utils.cls_test_database(models.TxAction)
 class TestTransactionManager(TestCase):
-    @patch("wallet.lib.transaction.manager.coin_manager")
-    @patch("wallet.lib.transaction.manager.provider_manager")
+    @patch("tilapia.lib.transaction.manager.coin_manager")
+    @patch("tilapia.lib.transaction.manager.provider_manager")
     def test_update_pending_actions(self, fake_provider_manager, fake_coin_manager):
         # prepare data
         daos.bulk_create(
@@ -271,9 +271,9 @@ class TestTransactionManager(TestCase):
                 index=0,
             )
 
-    @patch("wallet.lib.transaction.manager.provider_manager")
-    @patch("wallet.lib.transaction.manager.coin_manager")
-    @patch("wallet.lib.transaction.manager.time")
+    @patch("tilapia.lib.transaction.manager.provider_manager")
+    @patch("tilapia.lib.transaction.manager.coin_manager")
+    @patch("tilapia.lib.transaction.manager.time")
     def test_query_actions_by_address(self, fake_time, fake_coin_manager, fake_provider_manager):
         fake_coin_manager.get_chain_info.return_value = Mock(chain_model=coin_data.ChainModel.ACCOUNT)
         fake_coin_manager.get_coin_info.return_value = Mock(code="eth")
@@ -570,9 +570,9 @@ class TestTransactionManager(TestCase):
             ]
         )
 
-    @patch("wallet.lib.transaction.manager.provider_manager")
-    @patch("wallet.lib.transaction.manager.coin_manager")
-    @patch("wallet.lib.transaction.manager.time")
+    @patch("tilapia.lib.transaction.manager.provider_manager")
+    @patch("tilapia.lib.transaction.manager.coin_manager")
+    @patch("tilapia.lib.transaction.manager.time")
     def test_query_actions_by_address_check_max_times(self, fake_time, fake_coin_manager, fake_provider_manager):
         fake_time.time.return_value = 1610000000
         fake_coin_manager.get_chain_info.return_value = Mock(chain_model=coin_data.ChainModel.ACCOUNT)

@@ -1,13 +1,13 @@
 from unittest import TestCase
 from unittest.mock import call, patch
 
-from wallet.lib.basic import cipher
-from wallet.lib.basic.orm import test_utils
-from wallet.lib.secret import daos as secret_daos
-from wallet.lib.secret import manager as secret_manager
-from wallet.lib.secret import utils
-from wallet.lib.secret.data import CurveEnum, PubKeyType, SecretKeyType
-from wallet.lib.secret.models import PubKeyModel, SecretKeyModel
+from tilapia.lib.basic import cipher
+from tilapia.lib.basic.orm import test_utils
+from tilapia.lib.secret import daos as secret_daos
+from tilapia.lib.secret import manager as secret_manager
+from tilapia.lib.secret import utils
+from tilapia.lib.secret.data import CurveEnum, PubKeyType, SecretKeyType
+from tilapia.lib.secret.models import PubKeyModel, SecretKeyModel
 
 
 @test_utils.cls_test_database(PubKeyModel, SecretKeyModel)
@@ -81,7 +81,7 @@ class TestSecretManager(TestCase):
         self.assertEqual(xpub_model, models[0])
         self.assertEqual(pubkey_model, models[1])
 
-    @patch("wallet.lib.secret.manager.encrypt")
+    @patch("tilapia.lib.secret.manager.encrypt")
     def test_import_prvkey(self, fake_encrypt):
         fake_encrypt.encrypt_data.side_effect = lambda p, d: f"Encrypted<{p},{d}>"
 
@@ -114,7 +114,7 @@ class TestSecretManager(TestCase):
         self.assertIsNone(first_pubkey_model.path)
         self.assertIsNone(first_pubkey_model.parent_pubkey_id)
 
-    @patch("wallet.lib.secret.manager.encrypt")
+    @patch("tilapia.lib.secret.manager.encrypt")
     def test_import_xprv(self, fake_encrypt):
         fake_encrypt.encrypt_data.side_effect = lambda p, d: f"Encrypted<{p},{d}>"
 
@@ -148,7 +148,7 @@ class TestSecretManager(TestCase):
         self.assertEqual(self.account_level_path, first_pubkey_model.path)
         self.assertIsNone(first_pubkey_model.parent_pubkey_id)
 
-    @patch("wallet.lib.secret.manager.encrypt")
+    @patch("tilapia.lib.secret.manager.encrypt")
     def test_import_master_seed(self, fake_encrypt):
         fake_encrypt.encrypt_data.side_effect = lambda p, d: f"Encrypted<{p},{d}>"
 
@@ -174,7 +174,7 @@ class TestSecretManager(TestCase):
             first_secret_key_model.encrypted_message,
         )
 
-    @patch("wallet.lib.secret.manager.encrypt")
+    @patch("tilapia.lib.secret.manager.encrypt")
     def test_export_mnemonic(self, fake_encrypt):
         fake_encrypt.encrypt_data.side_effect = lambda p, d: d
         fake_encrypt.decrypt_data.side_effect = lambda p, d: d
@@ -201,7 +201,7 @@ class TestSecretManager(TestCase):
         self.assertEqual(self.mnemonic, mnemonic)
         self.assertEqual(self.passphrase, passphrase)
 
-    @patch("wallet.lib.secret.manager.encrypt")
+    @patch("tilapia.lib.secret.manager.encrypt")
     def test_derive_by_secret_key(self, fake_encrypt):
         fake_encrypt.encrypt_data.side_effect = lambda p, d: d
         fake_encrypt.decrypt_data.side_effect = lambda p, d: d
@@ -233,7 +233,7 @@ class TestSecretManager(TestCase):
         self.assertEqual(self.account_level_path, pubkey_model.path)
         self.assertIsNone(pubkey_model.parent_pubkey_id)
 
-    @patch("wallet.lib.secret.manager.encrypt")
+    @patch("tilapia.lib.secret.manager.encrypt")
     def test_derive_by_xpub(self, fake_encrypt):
         fake_encrypt.encrypt_data.side_effect = lambda p, d: d
 
@@ -272,7 +272,7 @@ class TestSecretManager(TestCase):
         self.assertEqual(self.address_level_path, pubkey_model.path)
         self.assertEqual(xpub_model.id, pubkey_model.parent_pubkey_id)
 
-    @patch("wallet.lib.secret.manager.encrypt")
+    @patch("tilapia.lib.secret.manager.encrypt")
     def test_get_verifier(self, fake_encrypt):
         xpub_model = secret_manager.import_xpub(CurveEnum.SECP256K1, self.account_level_xpub, self.account_level_path)
         pubkey_model = secret_manager.import_pubkey(
@@ -297,7 +297,7 @@ class TestSecretManager(TestCase):
         fake_encrypt.encrypt_data.assert_not_called()
         fake_encrypt.decrypt_data.assert_not_called()
 
-    @patch("wallet.lib.secret.manager.encrypt")
+    @patch("tilapia.lib.secret.manager.encrypt")
     def test_get_signer(self, fake_encrypt):
         fake_encrypt.encrypt_data.side_effect = lambda p, d: d
         fake_encrypt.decrypt_data.side_effect = lambda p, d: d

@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from wallet.lib.provider.chains.eth import ETHProvider
+from tilapia.lib.provider.chains.eth import ETHProvider
 
 
 class TestETHMessageMixin(TestCase):

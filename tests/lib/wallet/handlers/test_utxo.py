@@ -1,19 +1,19 @@
 from unittest import TestCase
 from unittest.mock import Mock, call, patch
 
-from wallet.lib.provider import data as provider_data
-from wallet.lib.utxo import data as utxo_data
-from wallet.lib.wallet.handlers import utxo
+from tilapia.lib.provider import data as provider_data
+from tilapia.lib.utxo import data as utxo_data
+from tilapia.lib.wallet.handlers import utxo
 
 
 class TestUTXOChainModelHandler(TestCase):
     def setUp(self) -> None:
         self.handler = utxo.UTXOChainModelHandler()
 
-        patch_coin_manager = patch("wallet.lib.wallet.handlers.utxo.coin_manager")
-        patch_provider_manager = patch("wallet.lib.wallet.handlers.utxo.provider_manager")
-        patch_utxo_manager = patch("wallet.lib.wallet.handlers.utxo.utxo_manager")
-        patch_daos = patch("wallet.lib.wallet.handlers.utxo.daos")
+        patch_coin_manager = patch("tilapia.lib.wallet.handlers.utxo.coin_manager")
+        patch_provider_manager = patch("tilapia.lib.wallet.handlers.utxo.provider_manager")
+        patch_utxo_manager = patch("tilapia.lib.wallet.handlers.utxo.utxo_manager")
+        patch_daos = patch("tilapia.lib.wallet.handlers.utxo.daos")
 
         self.fake_coin_manager = patch_coin_manager.start()
         self.fake_provider_manager = patch_provider_manager.start()

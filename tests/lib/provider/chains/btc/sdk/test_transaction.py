@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wallet.lib.provider.chains.btc.sdk import transaction
+from tilapia.lib.provider.chains.btc.sdk import transaction
 
 
 class TestTransaction(TestCase):

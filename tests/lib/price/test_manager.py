@@ -2,15 +2,15 @@ import decimal
 from unittest import TestCase
 from unittest.mock import Mock, call, patch
 
-from wallet.lib.basic.orm import test_utils
-from wallet.lib.price import daos, data, manager, models
+from tilapia.lib.basic.orm import test_utils
+from tilapia.lib.price import daos, data, manager, models
 
 
 @test_utils.cls_test_database(models.Price)
 class TestPriceManager(TestCase):
-    @patch("wallet.lib.price.manager._registry")
-    @patch("wallet.lib.price.manager.coin_manager")
-    @patch("wallet.lib.price.manager.daos")
+    @patch("tilapia.lib.price.manager._registry")
+    @patch("tilapia.lib.price.manager.coin_manager")
+    @patch("tilapia.lib.price.manager.daos")
     def test_pricing(self, fake_daos, fake_coin_manager, fake_registry):
         with self.subTest("Pricing all coins"):
             fake_coins = [Mock(code="btc"), Mock(code="eth")]
@@ -53,7 +53,7 @@ class TestPriceManager(TestCase):
             fake_coin_manager.get_all_coins.assert_not_called()
             fake_daos.create_or_update.assert_not_called()
 
-    @patch("wallet.lib.price.manager.coin_manager")
+    @patch("tilapia.lib.price.manager.coin_manager")
     def test_get_last_price(self, fake_coin_manager):
         # create fake pricing table
         # btc: 120000 usd,

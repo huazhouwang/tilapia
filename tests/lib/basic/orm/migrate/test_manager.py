@@ -4,47 +4,47 @@ from unittest.mock import Mock, call, patch
 
 from playhouse.migrate import migrate
 
-from wallet.lib.basic.orm import test_utils
-from wallet.lib.basic.orm.database import db
-from wallet.lib.basic.orm.migrate.manager import migrating
-from wallet.lib.basic.orm.migrate.models import MigrationRecord
+from tilapia.lib.basic.orm import test_utils
+from tilapia.lib.basic.orm.database import db
+from tilapia.lib.basic.orm.migrate.manager import migrating
+from tilapia.lib.basic.orm.migrate.models import MigrationRecord
 
 
 @test_utils.cls_test_database(MigrationRecord)
 class TestMigrate(TestCase):
-    @patch("wallet.lib.basic.orm.migrate.manager.SqliteMigrator")
-    @patch("wallet.lib.basic.orm.migrate.manager.pkgutil")
-    @patch("wallet.lib.basic.orm.migrate.manager.importlib")
-    @patch("wallet.lib.basic.orm.migrate.manager.settings")
+    @patch("tilapia.lib.basic.orm.migrate.manager.SqliteMigrator")
+    @patch("tilapia.lib.basic.orm.migrate.manager.pkgutil")
+    @patch("tilapia.lib.basic.orm.migrate.manager.importlib")
+    @patch("tilapia.lib.basic.orm.migrate.manager.settings")
     def test_migrating(self, fake_settings, fake_importlib, fake_pkgutil, fake_sqlite_migrator_creator):
         fake_settings.DB_MODULES = [
-            "wallet.lib.module_a",
-            "wallet.lib.module_b",
+            "tilapia.lib.module_a",
+            "tilapia.lib.module_b",
         ]
 
         fake_update_callback = Mock()
 
         fake_migration_a_dir = Mock(
-            __file__=True, __path__="/repo/src/module_a/migrations", __name__="wallet.lib.module_a.migrations"
+            __file__=True, __path__="/repo/src/module_a/migrations", __name__="tilapia.lib.module_a.migrations"
         )
         fake_migration_a_01 = Mock(
-            __name__="wallet.lib.module_a.migrations.01_init",
+            __name__="tilapia.lib.module_a.migrations.01_init",
             update=Mock(side_effect=partial(fake_update_callback, test_tag="a_01")),
         )
         fake_migration_a_04 = Mock(
-            __name__="wallet.lib.module_a.migrations.04_update",
+            __name__="tilapia.lib.module_a.migrations.04_update",
             update=Mock(side_effect=partial(fake_update_callback, test_tag="a_04")),
         )
 
         fake_migration_b_dir = Mock(
-            __file__=True, __path__="/repo/src/module_b/migrations", __name__="wallet.lib.module_b.migrations"
+            __file__=True, __path__="/repo/src/module_b/migrations", __name__="tilapia.lib.module_b.migrations"
         )
         fake_migration_b_01 = Mock(
-            __name__="wallet.lib.module_b.migrations.01_init_models",
+            __name__="tilapia.lib.module_b.migrations.01_init_models",
             update=Mock(side_effect=partial(fake_update_callback, test_tag="b_01")),
         )
         fake_migration_b_02 = Mock(
-            __name__="wallet.lib.module_b.migrations.02_update_models",
+            __name__="tilapia.lib.module_b.migrations.02_update_models",
             update=Mock(side_effect=partial(fake_update_callback, test_tag="b_02")),
         )
 

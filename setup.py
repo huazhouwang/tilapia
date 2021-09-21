@@ -4,7 +4,7 @@ import pathlib
 from pkg_resources import parse_requirements
 from setuptools import find_packages, setup
 
-from wallet import version
+from tilapia import version
 
 directory = pathlib.Path(__file__).parent
 
@@ -27,7 +27,7 @@ setup(
     keywords="multi-chain wallet cryptocurrencies btc eth python",
     entry_points={
         "console_scripts": [
-            "tilapia = wallet.api.wsgi:main",
+            "tilapia = tilapia.api.wsgi:main",
         ],
     },
 )

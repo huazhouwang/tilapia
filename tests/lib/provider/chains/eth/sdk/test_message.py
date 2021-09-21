@@ -1,8 +1,8 @@
 import json
 from unittest import TestCase
 
-from wallet.lib.provider.chains.eth.sdk import message as message_sdk
-from wallet.lib.provider.chains.eth.sdk import utils
+from tilapia.lib.provider.chains.eth.sdk import message as message_sdk
+from tilapia.lib.provider.chains.eth.sdk import utils
 
 
 def _to_bytes(hex_str: str) -> bytes:

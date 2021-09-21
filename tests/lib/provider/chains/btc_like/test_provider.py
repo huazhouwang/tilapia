@@ -1,12 +1,12 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from wallet.lib.coin import codes
-from wallet.lib.provider import data
-from wallet.lib.provider.chains.bch import provider as bch_provider
-from wallet.lib.provider.chains.btc import provider as btc_provider
-from wallet.lib.secret import data as secret_data
-from wallet.lib.secret import manager as secret_manager
+from tilapia.lib.coin import codes
+from tilapia.lib.provider import data
+from tilapia.lib.provider.chains.bch import provider as bch_provider
+from tilapia.lib.provider.chains.btc import provider as btc_provider
+from tilapia.lib.secret import data as secret_data
+from tilapia.lib.secret import manager as secret_manager
 
 
 class TestBTCLikeCoin(TestCase):

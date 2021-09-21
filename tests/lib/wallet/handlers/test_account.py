@@ -1,17 +1,17 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from wallet.lib.provider import data as provider_data
-from wallet.lib.wallet.handlers import account
+from tilapia.lib.provider import data as provider_data
+from tilapia.lib.wallet.handlers import account
 
 
 class TestAccountChainModelHandler(TestCase):
     def setUp(self) -> None:
         self.handler = account.AccountChainModelHandler()
 
-        patch_coin_manager = patch("wallet.lib.wallet.handlers.account.coin_manager")
-        patch_provider_manager = patch("wallet.lib.wallet.handlers.account.provider_manager")
-        patch_daos = patch("wallet.lib.wallet.handlers.account.daos")
+        patch_coin_manager = patch("tilapia.lib.wallet.handlers.account.coin_manager")
+        patch_provider_manager = patch("tilapia.lib.wallet.handlers.account.provider_manager")
+        patch_daos = patch("tilapia.lib.wallet.handlers.account.daos")
 
         self.fake_coin_manager = patch_coin_manager.start()
         self.fake_provider_manager = patch_provider_manager.start()

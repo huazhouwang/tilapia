@@ -2,13 +2,13 @@ from collections import namedtuple
 from unittest import TestCase
 from unittest.mock import Mock, call, patch
 
-from wallet.lib.basic.functional.timing import timing_logger
+from tilapia.lib.basic.functional.timing import timing_logger
 
 
 class TestTiming(TestCase):
-    @patch("wallet.lib.basic.functional.timing.time.time")
-    @patch("wallet.lib.basic.functional.timing.uuid.uuid4")
-    @patch("wallet.lib.basic.functional.timing.threading.current_thread")
+    @patch("tilapia.lib.basic.functional.timing.time.time")
+    @patch("tilapia.lib.basic.functional.timing.uuid.uuid4")
+    @patch("tilapia.lib.basic.functional.timing.threading.current_thread")
     def test_timing_logger(
         self,
         fake_current_thread,

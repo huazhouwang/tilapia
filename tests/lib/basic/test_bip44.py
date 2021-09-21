@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wallet.lib.basic.bip44 import BIP44Level, BIP44Path
+from tilapia.lib.basic.bip44 import BIP44Level, BIP44Path
 
 
 class TestBIP44Path(TestCase):

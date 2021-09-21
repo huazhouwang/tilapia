@@ -2,17 +2,17 @@ import decimal
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from wallet.lib.price import data
-from wallet.lib.price.channels import uniswap
-from wallet.lib.provider.chains.eth.clients import geth as geth_client
+from tilapia.lib.price import data
+from tilapia.lib.price.channels import uniswap
+from tilapia.lib.provider.chains.eth.clients import geth as geth_client
 
 
 class _TestUniswap(object):
     version: int
 
-    @patch("wallet.lib.price.channels.uniswap.settings")
-    @patch("wallet.lib.price.channels.uniswap.coin_manager")
-    @patch("wallet.lib.price.channels.uniswap.provider_manager")
+    @patch("tilapia.lib.price.channels.uniswap.settings")
+    @patch("tilapia.lib.price.channels.uniswap.coin_manager")
+    @patch("tilapia.lib.price.channels.uniswap.provider_manager")
     def test_pricing(self, fake_provider_manager, fake_coin_manager, fake_settings):
         mapping = {
             "eth": {

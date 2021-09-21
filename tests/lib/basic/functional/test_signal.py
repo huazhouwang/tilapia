@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, call
 
-from wallet.lib.basic.functional.signal import Signal
+from tilapia.lib.basic.functional.signal import Signal
 
 
 class TestSignal(TestCase):

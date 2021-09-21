@@ -1,14 +1,14 @@
 from unittest import TestCase
 from unittest.mock import call, patch
 
-from wallet.lib.hardware import exceptions
-from wallet.lib.hardware.callbacks import helper
+from tilapia.lib.hardware import exceptions
+from tilapia.lib.hardware.callbacks import helper
 
 
 class TestHelper(TestCase):
-    @patch("wallet.lib.hardware.callbacks.helper.set_value_to_agent")
-    @patch("wallet.lib.hardware.callbacks.helper.get_value_of_agent")
-    @patch("wallet.lib.hardware.callbacks.helper.time")
+    @patch("tilapia.lib.hardware.callbacks.helper.set_value_to_agent")
+    @patch("tilapia.lib.hardware.callbacks.helper.get_value_of_agent")
+    @patch("tilapia.lib.hardware.callbacks.helper.time")
     def test_require_specific_value_of_agent(self, fake_time, fake_get_value_of_agent, fake_set_value_to_agent):
         timestamp = 1599999999
 
@@ -50,9 +50,9 @@ class TestHelper(TestCase):
             ]
         )
 
-    @patch("wallet.lib.hardware.callbacks.helper.set_value_to_agent")
-    @patch("wallet.lib.hardware.callbacks.helper.get_value_of_agent")
-    @patch("wallet.lib.hardware.callbacks.helper.time")
+    @patch("tilapia.lib.hardware.callbacks.helper.set_value_to_agent")
+    @patch("tilapia.lib.hardware.callbacks.helper.get_value_of_agent")
+    @patch("tilapia.lib.hardware.callbacks.helper.time")
     def test_require_specific_value_of_agent__timeout(
         self, fake_time, fake_get_value_of_agent, fake_set_value_to_agent
     ):

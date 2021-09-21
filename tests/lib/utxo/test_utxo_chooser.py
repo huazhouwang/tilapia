@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wallet.lib.utxo import utxo_chooser
+from tilapia.lib.utxo import utxo_chooser
 
 
 class TestUTXOChooser(TestCase):

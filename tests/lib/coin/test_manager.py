@@ -2,8 +2,8 @@ from typing import List
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from wallet.lib.basic.orm import test_utils
-from wallet.lib.coin import daos, data, exceptions, loader, manager, models
+from tilapia.lib.basic.orm import test_utils
+from tilapia.lib.coin import daos, data, exceptions, loader, manager, models
 
 
 def _order_coins(coins: List[data.CoinInfo]) -> List[data.CoinInfo]:
@@ -152,8 +152,8 @@ class TestCoinManager(TestCase):
         self.assertEqual((self.coin_ont, self.coin_ont, self.coin_ong), manager.get_related_coins("ont"))
         self.assertEqual((self.coin_ont, self.coin_ong, self.coin_ong), manager.get_related_coins("ont_ong"))
 
-    @patch("wallet.lib.coin.manager.daos.add_coin")
-    @patch("wallet.lib.coin.manager.daos.update_coin_info")
+    @patch("tilapia.lib.coin.manager.daos.add_coin")
+    @patch("tilapia.lib.coin.manager.daos.update_coin_info")
     def test_add_coin(self, fake_update_coin_info, fake_add_coin):
         with self.subTest("Add coin that already exists in the local list"):
             self.assertEqual(
@@ -244,7 +244,7 @@ class TestCoinManager(TestCase):
 
         with self.subTest("automatically add token address"):
             with patch(
-                "wallet.lib.coin.manager.provider_manager.get_token_info_by_address"
+                "tilapia.lib.coin.manager.provider_manager.get_token_info_by_address"
             ) as fake_get_token_info_by_address:
                 fake_get_token_info_by_address.return_value = ("CC", "Chain Coin", 18)
                 self.assertEqual(

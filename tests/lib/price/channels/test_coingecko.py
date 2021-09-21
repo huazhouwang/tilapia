@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock, call, patch
 
-from wallet.lib.price import data
-from wallet.lib.price.channels import coingecko
+from tilapia.lib.price import data
+from tilapia.lib.price.channels import coingecko
 
 
 class TestCoingecko(TestCase):
@@ -10,7 +10,7 @@ class TestCoingecko(TestCase):
         self.cgk = coingecko.Coingecko()
         self.cgk.restful = Mock()
 
-    @patch("wallet.lib.price.channels.coingecko.settings")
+    @patch("tilapia.lib.price.channels.coingecko.settings")
     def test_pricing_btc(self, fake_settings):
         fake_settings.PRICE = {"coingecko_mappings": {}}
         self.cgk.restful.get.return_value = {
@@ -36,7 +36,7 @@ class TestCoingecko(TestCase):
         )
         self.cgk.restful.get.assert_called_once_with("/api/v3/exchange_rates")
 
-    @patch("wallet.lib.price.channels.coingecko.settings")
+    @patch("tilapia.lib.price.channels.coingecko.settings")
     def test_pricing_pre_config_cgk_id_coins(self, fake_settings):
 
         fake_settings.PRICE = {
@@ -88,7 +88,7 @@ class TestCoingecko(TestCase):
             ]
         )
 
-    @patch("wallet.lib.price.channels.coingecko.settings")
+    @patch("tilapia.lib.price.channels.coingecko.settings")
     def test_pricing_erc20(self, fake_settings):
         fake_settings.PRICE = {"coingecko_mappings": {}}
         self.cgk.restful.get.side_effect = [{}, {"0x11": {"btc": 0.000125}, "0xab": {"btc": 0.00011}}]

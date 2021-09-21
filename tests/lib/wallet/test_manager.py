@@ -3,22 +3,22 @@ import decimal
 from unittest import TestCase
 from unittest.mock import Mock, call, patch
 
-from wallet.lib.basic import bip44, cipher
-from wallet.lib.basic.orm import test_utils
-from wallet.lib.coin import data as coin_data
-from wallet.lib.coin import models as coin_models
-from wallet.lib.provider import data as provider_data
-from wallet.lib.secret import data as secret_data
-from wallet.lib.secret import models as secret_models
-from wallet.lib.transaction import data as transaction_data
-from wallet.lib.transaction import manager as transaction_manager
-from wallet.lib.transaction import models as transaction_models
-from wallet.lib.utxo import models as utxo_models
-from wallet.lib.wallet import daos as wallet_daos
-from wallet.lib.wallet import data as wallet_data
-from wallet.lib.wallet import exceptions as wallet_exceptions
-from wallet.lib.wallet import manager as wallet_manager
-from wallet.lib.wallet import models as wallet_models
+from tilapia.lib.basic import bip44, cipher
+from tilapia.lib.basic.orm import test_utils
+from tilapia.lib.coin import data as coin_data
+from tilapia.lib.coin import models as coin_models
+from tilapia.lib.provider import data as provider_data
+from tilapia.lib.secret import data as secret_data
+from tilapia.lib.secret import models as secret_models
+from tilapia.lib.transaction import data as transaction_data
+from tilapia.lib.transaction import manager as transaction_manager
+from tilapia.lib.transaction import models as transaction_models
+from tilapia.lib.utxo import models as utxo_models
+from tilapia.lib.wallet import daos as wallet_daos
+from tilapia.lib.wallet import data as wallet_data
+from tilapia.lib.wallet import exceptions as wallet_exceptions
+from tilapia.lib.wallet import manager as wallet_manager
+from tilapia.lib.wallet import models as wallet_models
 
 
 @test_utils.cls_test_database(
@@ -99,7 +99,7 @@ class TestWalletManager(TestCase):
         ]
 
         patch_loader = patch(
-            "wallet.lib.coin.manager.loader",
+            "tilapia.lib.coin.manager.loader",
             CHAINS_DICT={i.chain_code: i for i in chains},
             COINS_DICT={i.code: i for i in coins},
         )
@@ -438,7 +438,7 @@ class TestWalletManager(TestCase):
             (self.mnemonic, self.passphrase), wallet_manager.export_mnemonic(wallet_info["wallet_id"], self.password)
         )
 
-    @patch("wallet.lib.wallet.manager.provider_manager.get_address")
+    @patch("tilapia.lib.wallet.manager.provider_manager.get_address")
     def test_search_existing_wallets(self, fake_get_address):
         fake_get_address.side_effect = (
             lambda chain_code, address: provider_data.Address(address=address, balance=18888, existing=True)
@@ -483,9 +483,9 @@ class TestWalletManager(TestCase):
         wallet_manager.update_wallet_password(wallet_info["wallet_id"], self.password, "bye")
         wallet_manager.update_wallet_password(wallet_info["wallet_id"], "bye", self.password)
 
-    @patch("wallet.lib.wallet.manager.handlers.get_handler_by_chain_model")
-    @patch("wallet.lib.wallet.manager.provider_manager")
-    @patch("wallet.lib.wallet.manager._verify_unsigned_tx")
+    @patch("tilapia.lib.wallet.manager.handlers.get_handler_by_chain_model")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager._verify_unsigned_tx")
     def test_pre_send(self, fake_verify_unsigned_tx, fake_provider_manager, fake_get_handler_by_chain_model):
         wallet = wallet_daos.wallet.create_wallet("testing", wallet_data.WalletType.SOFTWARE_PRIMARY, "eth")
 
@@ -532,10 +532,10 @@ class TestWalletManager(TestCase):
             ):
                 wallet_manager.pre_send(wallet.id, "eth_usdt", "fake_display_address")
 
-    @patch("wallet.lib.wallet.manager.handlers.get_handler_by_chain_model")
-    @patch("wallet.lib.wallet.manager.provider_manager")
-    @patch("wallet.lib.wallet.manager.secret_manager")
-    @patch("wallet.lib.wallet.manager.transaction_manager")
+    @patch("tilapia.lib.wallet.manager.handlers.get_handler_by_chain_model")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager.secret_manager")
+    @patch("tilapia.lib.wallet.manager.transaction_manager")
     def test_send__software(
         self,
         fake_transaction_manager,
@@ -617,8 +617,8 @@ class TestWalletManager(TestCase):
                 raw_tx="fake_raw_tx",
             )
 
-    @patch("wallet.lib.wallet.manager.provider_manager")
-    @patch("wallet.lib.wallet.manager.transaction_manager")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager.transaction_manager")
     def test_broadcast_transaction(self, fake_transaction_manager, fake_provider_manager):
         with self.subTest("broadcast success"):
             fake_receipt = provider_data.TxBroadcastReceipt(
@@ -679,7 +679,7 @@ class TestWalletManager(TestCase):
                 ),
             )
 
-    @patch("wallet.lib.wallet.manager.get_default_account_by_wallet")
+    @patch("tilapia.lib.wallet.manager.get_default_account_by_wallet")
     def test_create_or_show_asset(self, fake_get_default_account_by_wallet):
         with self.subTest("Create asset as expected"):
             fake_get_default_account_by_wallet.return_value = Mock(id=1001, chain_code="eth")
@@ -710,7 +710,7 @@ class TestWalletManager(TestCase):
             testing_asset = wallet_daos.asset.query_assets_by_ids([testing_asset.id])[0]
             self.assertTrue(testing_asset.is_visible)
 
-    @patch("wallet.lib.wallet.manager.get_default_account_by_wallet")
+    @patch("tilapia.lib.wallet.manager.get_default_account_by_wallet")
     def test_hide_asset(self, fake_get_default_account_by_wallet):
         with self.subTest("Asset not found"):
             fake_get_default_account_by_wallet.return_value = Mock(id=1001, chain_code="eth")
@@ -727,8 +727,8 @@ class TestWalletManager(TestCase):
             asset = wallet_daos.asset.query_assets_by_ids([asset.id])[0]
             self.assertFalse(asset.is_visible)
 
-    @patch("wallet.lib.wallet.manager.coin_manager")
-    @patch("wallet.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager.coin_manager")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
     def test_refresh_assets(self, fake_provider_manager, fake_coin_manager):
         account = wallet_daos.account.create_account(11, "eth", "fake_address")
         asset_a = wallet_daos.asset.create_asset(11, account.id, "eth", "eth_usdt")
@@ -818,10 +818,10 @@ class TestWalletManager(TestCase):
         self.assertEqual(0, wallet_models.AssetModel.select().count())
         self.assertEqual(0, transaction_models.TxAction.select().count())
 
-    @patch("wallet.lib.wallet.manager.handlers.get_handler_by_chain_model")
-    @patch("wallet.lib.wallet.manager.provider_manager")
-    @patch("wallet.lib.wallet.manager.transaction_manager")
-    @patch("wallet.lib.wallet.manager.hardware_manager")
+    @patch("tilapia.lib.wallet.manager.handlers.get_handler_by_chain_model")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager.transaction_manager")
+    @patch("tilapia.lib.wallet.manager.hardware_manager")
     def test_send__hardware(
         self,
         fake_hardware_manager,
@@ -917,7 +917,7 @@ class TestWalletManager(TestCase):
                 raw_tx="fake_raw_tx",
             )
 
-    @patch("wallet.lib.wallet.manager.hardware_manager")
+    @patch("tilapia.lib.wallet.manager.hardware_manager")
     def test_generate_next_bip44_path_for_primary_hardware_wallet(self, fake_hardware_manager):
         hardware_device_path = "fake_hardware_device_path"
         hardware_key_id = "fake_hardware_key_id"
@@ -956,8 +956,8 @@ class TestWalletManager(TestCase):
                 ).to_bip44_path(),
             )
 
-    @patch("wallet.lib.wallet.manager.provider_manager.hardware_get_xpub")
-    @patch("wallet.lib.wallet.manager.hardware_manager")
+    @patch("tilapia.lib.wallet.manager.provider_manager.hardware_get_xpub")
+    @patch("tilapia.lib.wallet.manager.hardware_manager")
     def test_create_next_primary_hardware_wallet(self, fake_hardware_manager, fake_hardware_get_xpub):
         hardware_device_path = "fake_hardware_device_path"
         hardware_key_id = "fake_hardware_key_id"
@@ -1024,8 +1024,8 @@ class TestWalletManager(TestCase):
             self.assertEqual(2, wallet_models.WalletModel.select().count())
             self.assertEqual(2, secret_models.PubKeyModel.select().count())
 
-    @patch("wallet.lib.wallet.manager.provider_manager.hardware_get_xpub")
-    @patch("wallet.lib.wallet.manager.hardware_manager")
+    @patch("tilapia.lib.wallet.manager.provider_manager.hardware_get_xpub")
+    @patch("tilapia.lib.wallet.manager.hardware_manager")
     def test_create_standalone_hardware_wallet(self, fake_hardware_manager, fake_hardware_get_xpub):
         hardware_device_path = "fake_hardware_device_path"
         hardware_key_id = "fake_hardware_key_id"
@@ -1057,8 +1057,8 @@ class TestWalletManager(TestCase):
         )
         fake_hardware_get_xpub.assert_called_once_with("eth", hardware_device_path, "m/44'/60'/0'/0/1")
 
-    @patch("wallet.lib.wallet.manager.provider_manager")
-    @patch("wallet.lib.wallet.manager.hardware_manager")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager.hardware_manager")
     def test_sign_message__hardware(self, fake_hardware_manager, fake_provider_manager):
         hardware_key_id = "fake_hardware_key_id"
         hardware_device_path = "fake_device_path"
@@ -1095,8 +1095,8 @@ class TestWalletManager(TestCase):
                 "eth", hardware_device_path, "Hello OneKey", "m/44'/60'/0'/0/1024"
             )
 
-    @patch("wallet.lib.wallet.manager.provider_manager")
-    @patch("wallet.lib.wallet.manager.secret_manager")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager.secret_manager")
     def test_sign_message__software(self, fake_secret_manager, fake_provider_manager):
         wallet = wallet_daos.wallet.create_wallet("testing", wallet_data.WalletType.SOFTWARE_PRIMARY, "eth")
         account = wallet_daos.account.create_account(wallet.id, "eth", "my_address", pubkey_id=111)
@@ -1112,7 +1112,7 @@ class TestWalletManager(TestCase):
             "eth", "Hello OneKey", fake_signer, address="my_address"
         )
 
-    @patch("wallet.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
     def test_verify_message__hardware(self, fake_provider_manager):
         fake_provider_manager.hardware_verify_message.return_value = True
         fake_provider_manager.verify_address.return_value = Mock(normalized_address="fake_address")
@@ -1126,7 +1126,7 @@ class TestWalletManager(TestCase):
             "eth", "fake_device_path", "fake_address", "Hello OneKey", "fake_signature"
         )
 
-    @patch("wallet.lib.wallet.manager.provider_manager")
+    @patch("tilapia.lib.wallet.manager.provider_manager")
     def test_verify_message__software(self, fake_provider_manager):
         fake_provider_manager.verify_message.return_value = True
         fake_provider_manager.verify_address.return_value = Mock(normalized_address="fake_address")

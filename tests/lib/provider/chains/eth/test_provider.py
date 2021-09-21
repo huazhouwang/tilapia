@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from wallet.lib.provider import data
-from wallet.lib.provider.chains.eth import ETHProvider, Geth
+from tilapia.lib.provider import data
+from tilapia.lib.provider.chains.eth import ETHProvider, Geth
 
 
 class TestETHProvider(TestCase):

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wallet.lib.provider.chains.btc.sdk.custom import dash
+from tilapia.lib.provider.chains.btc.sdk.custom import dash
 
 _DASH_FIXTURE = [
     dict(

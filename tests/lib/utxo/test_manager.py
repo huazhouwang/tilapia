@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from wallet.lib.basic.orm import test_utils
-from wallet.lib.provider import data as provider_data
-from wallet.lib.utxo import daos, data, manager, models
+from tilapia.lib.basic.orm import test_utils
+from tilapia.lib.provider import data as provider_data
+from tilapia.lib.utxo import daos, data, manager, models
 
 
 @test_utils.cls_test_database(models.UTXO, models.WhoSpent)
@@ -37,8 +37,8 @@ class TestUTXOManager(TestCase):
         utxos[4].save()
         self.assertEqual([utxos[1], utxos[2], utxos[0]], manager.choose_utxos("btc", ["address1", "address2"], 2000))
 
-    @patch("wallet.lib.utxo.manager.provider_manager.search_utxos_by_address")
-    @patch("wallet.lib.utxo.manager.coin_manager.get_chain_info")
+    @patch("tilapia.lib.utxo.manager.provider_manager.search_utxos_by_address")
+    @patch("tilapia.lib.utxo.manager.coin_manager.get_chain_info")
     def test_refresh_utxos_by_address(self, fake_get_chain_info, fake_search_utxos_by_address):
         daos.bulk_create_utxos(
             [

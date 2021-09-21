@@ -1,8 +1,8 @@
 from typing import Dict, List, Tuple
 from unittest import TestCase
 
-from wallet.lib.secret.data import CurveEnum
-from wallet.lib.secret.registry import bip32_class_on_curve
+from tilapia.lib.secret.data import CurveEnum
+from tilapia.lib.secret.registry import bip32_class_on_curve
 
 
 class TestBIP32(TestCase):

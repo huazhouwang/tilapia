@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from wallet.lib.basic.functional.require import require, require_none, require_not_none
+from tilapia.lib.basic.functional.require import require, require_none, require_not_none
 
 
 class TestRequire(TestCase):

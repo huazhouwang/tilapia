@@ -1,11 +1,11 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from wallet.lib.basic.functional.wraps import cache_it
+from tilapia.lib.basic.functional.wraps import cache_it
 
 
 class TestWraps(TestCase):
-    @patch("wallet.lib.basic.functional.wraps.time")
+    @patch("tilapia.lib.basic.functional.wraps.time")
     def test_cache_it(self, fake_time):
         fake_callable = Mock(return_value="ping")
         func = cache_it()(fake_callable)

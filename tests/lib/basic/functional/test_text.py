@@ -2,7 +2,7 @@ import datetime
 import decimal
 from unittest import TestCase
 
-from wallet.lib.basic.functional.text import force_bytes, force_text
+from tilapia.lib.basic.functional.text import force_bytes, force_text
 
 
 class TestText(TestCase):

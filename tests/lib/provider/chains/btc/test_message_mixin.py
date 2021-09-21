@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from wallet.lib.provider.chains.btc import provider
-from wallet.lib.secret import data as secret_data
-from wallet.lib.secret import manager as secret_manager
+from tilapia.lib.provider.chains.btc import provider
+from tilapia.lib.secret import data as secret_data
+from tilapia.lib.secret import manager as secret_manager
 
 
 class TestBTCMessageMixin(TestCase):
