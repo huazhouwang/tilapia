@@ -40,6 +40,19 @@ class Item:
             require(new_password, "Require 'new_password'")
             wallet_manager.update_wallet_password(wallet_id, password, new_password)
 
+    @jsonschema.validate(
+        {
+            "type": "object",
+            "required": ["password"],
+            "properties": {
+                "password": {"type": "string"},
+            },
+        }
+    )
+    def on_delete(self, req, resp, wallet_id):
+        password = req.media["password"]
+        wallet_manager.cascade_delete_wallet_related_models(wallet_id, password)
+
 
 class PreSend:
     URI = Collection.URI + "/{wallet_id}/pre_send"
