@@ -1,5 +1,6 @@
 from falcon.media.validators import jsonschema
 
+from wallet.lib.basic.functional.require import require
 from wallet.lib.wallet import manager as wallet_manager
 
 
@@ -17,6 +18,27 @@ class Item:
     def on_get(self, req, resp, wallet_id):
         update_balance = req.params.get("update_balance", False)
         resp.media = wallet_manager.get_wallet_info_by_id(wallet_id, update_balance=update_balance)
+
+    @jsonschema.validate(
+        {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "password": {"type": "string"},
+                "new_password": {"type": "string"},
+            },
+        }
+    )
+    def on_post(self, req, resp, wallet_id):
+        media = req.media
+        name, password, new_password = media.get("name"), media.get("password"), media.get("new_password")
+
+        if name:
+            wallet_manager.update_wallet_name(wallet_id, name)
+
+        if password:
+            require(new_password, "Require 'new_password'")
+            wallet_manager.update_wallet_password(wallet_id, password, new_password)
 
 
 class PreSend:
