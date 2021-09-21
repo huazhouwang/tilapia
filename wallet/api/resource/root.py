@@ -5,7 +5,7 @@ class Root:
     URI = ""
 
     def on_get(self, req, resp):
-        resp.media = "Multi-chain Wallet"
+        resp.media = "Tilapia"
 
 
 class Ping:

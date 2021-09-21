@@ -8,7 +8,7 @@ from wallet.lib.basic.request.interfaces import RestfulInterface
 
 
 class RestfulRequest(RestfulInterface):
-    __DEFAULT_HEADER__ = {"User-Agent": "MultiChainWallet"}
+    __DEFAULT_HEADER__ = {"User-Agent": "Tilapia"}
 
     def __init__(
         self,

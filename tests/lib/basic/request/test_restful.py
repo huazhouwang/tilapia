@@ -16,7 +16,7 @@ class TestRestfulRequest(TestCase):
                 "https://www.restful_testing.com", session_initializer=fake_session_initializer
             )
 
-            fake_session.headers.update.assert_called_once_with({"User-Agent": "MultiChainWallet"})
+            fake_session.headers.update.assert_called_once_with({"User-Agent": "Tilapia"})
             fake_session_initializer.assert_called_once_with(fake_session)
 
         with self.subTest("Get error response"):
