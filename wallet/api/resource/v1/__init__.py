@@ -12,6 +12,8 @@ __RESOURCES__ = [
     chain.FeePrice,
     wallet.Collection,
     wallet.Item,
+    wallet.ShowAsset,
+    wallet.HideAsset,
     wallet.PreSend,
     wallet.Send,
     software_wallet.PrimaryCreator,

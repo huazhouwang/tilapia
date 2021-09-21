@@ -1,6 +1,7 @@
 from falcon.media.validators import jsonschema
 
 from wallet.lib.basic.functional.require import require
+from wallet.lib.coin import manager as coin_manager
 from wallet.lib.wallet import manager as wallet_manager
 
 
@@ -52,6 +53,25 @@ class Item:
     def on_delete(self, req, resp, wallet_id):
         password = req.media["password"]
         wallet_manager.cascade_delete_wallet_related_models(wallet_id, password)
+
+
+class _Asset:
+    URI = Item.URI + "/assets"
+
+
+class ShowAsset:
+    URI = _Asset.URI + "/show/{coin_code}"
+
+    def on_post(self, req, resp, wallet_id, coin_code):
+        wallet_manager.create_or_show_asset(wallet_id, coin_code)
+        resp.media = coin_manager.get_coin_info(coin_code)
+
+
+class HideAsset:
+    URI = _Asset.URI + "/hide/{coin_code}"
+
+    def on_post(self, req, resp, wallet_id, coin_code):
+        wallet_manager.hide_asset(wallet_id, coin_code)
 
 
 class PreSend:

@@ -799,8 +799,9 @@ def broadcast_transaction(chain_code: str, signed_tx: provider_data.SignedTx) ->
 
 
 def create_or_show_asset(wallet_id: int, coin_code: str):
-    _ = coin_manager.get_coin_info(coin_code)  # Check coin existing only
+    coin_info = coin_manager.get_coin_info(coin_code)  # Check coin existing only
     default_account = get_default_account_by_wallet(wallet_id)
+    require(coin_info.chain_code == default_account.chain_code, "Chain code mismatched")
     asset = daos.asset.get_asset_by_account_and_coin_code(default_account.id, coin_code)
     if asset is None:
         daos.asset.create_asset(wallet_id, default_account.id, default_account.chain_code, coin_code, is_visible=True)
