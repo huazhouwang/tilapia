@@ -1,7 +1,4 @@
-import falcon
-
-
-def _register_routers(app: falcon.App):
+def _register_routers(app):
     from wallet.api.resource import root, v1
 
     for module in (root, v1):
@@ -13,14 +10,14 @@ def _register_routers(app: falcon.App):
             app.add_route(path, clazz())
 
 
-def _register_middlewares(app: falcon.App):
+def _register_middlewares(app):
     from wallet.api.middleware import json_translator
 
     for module in (json_translator,):
         app.add_middleware(module.Middleware())
 
 
-def _register_error_handlers(app: falcon.App):
+def _register_error_handlers(app):
     from wallet.api.error_handler import fallback, self_handle
 
     for module in (fallback, self_handle):
@@ -40,6 +37,8 @@ def _ensure_env():
 
 
 def create_app():
+    import falcon
+
     _ensure_env()
 
     app = falcon.App()
