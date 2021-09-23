@@ -16,11 +16,11 @@ class BIP32ED25519(BIP32Interface):
     def deserialize(cls, data: bytes) -> "BIP32Interface":
         depth, parent_fingerprint, child_index, chaincode, is_private, key_data = base.extract_hwif_data(data)
         if is_private:
-            prvkey = data[1:]
+            prvkey = key_data[1:]
             pubkey = None
         else:
             prvkey = None
-            pubkey = data[1:]
+            pubkey = key_data[1:]
 
         return cls(
             prvkey=prvkey,
