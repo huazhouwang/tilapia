@@ -1,5 +1,7 @@
 # Tilapia
 
+![](https://github.com/huazhouwang/tilapia/actions/workflows/test-runner.yml/badge.svg)
+
 A multi-chain wallet (or library), written in python,
 supports btc, bch, ltc, eth, bsc, etc.
 
