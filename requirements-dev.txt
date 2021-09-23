@@ -2,3 +2,4 @@ black
 pre-commit
 ipython
 pytest
+pyinstaller==4.5.1
