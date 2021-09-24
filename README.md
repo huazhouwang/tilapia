@@ -10,7 +10,7 @@ supports btc, bch, ltc, eth, bsc, etc.
 1. Prepare python env, recommend >= 3.8
 2. Install requirements
     * `pip install -r requirements.txt` (optional, use only as library)
-    * `pip install -r requirements-optional.txt` (optional, api server needs)
+    * `pip install -r requirements-api.txt` (optional, api server needs)
     * `pip install -r requiremetns-dev.txt` (optional, develop needs)
 3. Play with restful api
    * `./scripts/run.sh`
